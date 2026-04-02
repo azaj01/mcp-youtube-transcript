@@ -1,6 +1,6 @@
 #  test_mcp.py
 #
-#  Copyright (c) 2025 Junpei Kawamoto
+#  Copyright (c) 2025-2026 Junpei Kawamoto
 #
 #  This software is released under the MIT License.
 #
@@ -379,6 +379,25 @@ async def test_get_video_info(mcp_client_session: ClientSession) -> None:
     info = VideoInfo.model_validate_json(res.content[0].text, strict=True)
     assert info == expect
     assert not res.isError
+
+
+@pytest.mark.skipif(os.getenv("CI") == "true", reason="Skipping this test on CI")
+@pytest.mark.default_cassette("LPZh9BOjkQs.yaml")
+@pytest.mark.vcr
+@pytest.mark.anyio
+async def test_get_available_languages(mcp_client_session: ClientSession) -> None:
+    video_id = "LPZh9BOjkQs"
+
+    expect = [str(t) for t in YouTubeTranscriptApi().list(video_id)]
+
+    res = await mcp_client_session.call_tool(
+        "get_available_languages",
+        arguments={"url": f"https://www.youtube.com/watch?v={video_id}"},
+    )
+    assert not res.isError
+
+    langs = [r.text for r in res.content if isinstance(r, TextContent)]
+    assert langs == expect
 
 
 def test_parse_time_info() -> None:
