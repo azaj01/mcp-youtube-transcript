@@ -45,6 +45,10 @@
     {
       "name": "get_video_info",
       "description": "Fetches the metadata of a specified YouTube video."
+    },
+    {
+      "name": "get_available_languages",
+      "description": "Retrieves the available languages for the video."
     }
   ],
   "compatibility": {
