@@ -36,6 +36,12 @@ Fetches the metadata of a specified YouTube video.
 #### Parameters
 - **url** *(string)*: The full URL of the YouTube video. This field is required.
 
+### `get_available_languages`
+Retrieves the available languages for the video.
+
+#### Parameters
+- **url** *(string)*: The full URL of the YouTube video. This field is required.
+
 ## Installation
 > [!NOTE]
 > You'll need [`uv`](https://docs.astral.sh/uv) installed on your system to use `uvx` command.
