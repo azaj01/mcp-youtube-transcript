@@ -1,6 +1,6 @@
 #  __init__.py
 #
-#  Copyright (c) 2025 Junpei Kawamoto
+#  Copyright (c) 2025-2026 Junpei Kawamoto
 #
 #  This software is released under the MIT License.
 #
@@ -167,6 +167,11 @@ def _get_video_info(ctx: AppContext, video_url: str) -> VideoInfo:
     )
 
 
+@lru_cache
+def _get_available_languages(ctx: AppContext, video_id: str) -> list[str]:
+    return [str(t) for t in ctx.ytt_api.list(video_id)]
+
+
 def server(
     response_limit: int | None = None,
     webshare_proxy_username: str | None = None,
@@ -244,6 +249,14 @@ def server(
     ) -> VideoInfo:
         """Retrieves the video information."""
         return _get_video_info(ctx.request_context.lifespan_context, url)
+
+    @mcp.tool()
+    def get_available_languages(
+        ctx: Context[ServerSession, AppContext],
+        url: str = Field(description="The URL of the YouTube video"),
+    ) -> list[str]:
+        """Retrieves the available languages for the video."""
+        return _get_available_languages(ctx.request_context.lifespan_context, _parse_video_id(url))
 
     return mcp
 
