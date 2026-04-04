@@ -549,7 +549,7 @@ wheels = [
 
 [[package]]
 name = "mcp-youtube-transcript"
-version = "0.5.14"
+version = "0.6.0"
 source = { editable = "." }
 dependencies = [
     { name = "beautifulsoup4" },
